@@ -1,0 +1,31 @@
+=== RESUMEN DE ANALISIS ===
+
+Elemento	Palabra	Conteo
+Palabras Reservadas
+	include	1
+	using	1
+	namespace	1
+	int	2
+	if	1
+	return	1
+Variables
+	iostream	1
+	std	1
+	main	1
+	x	2
+	cout	1
+	endl	1
+Signos de Agrupacion
+	(	2
+	)	2
+	{	2
+	}	2
+Operadores Aritmeticos
+	<	5
+	>	2
+	=	1
+Fin de Linea
+	;	4
+
+Errores detectados: 1
+Error en línea 1, columna 1 → '#'

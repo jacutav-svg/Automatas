@@ -1,101 +1,83 @@
-%% 
-%class CppLexer
-%unicode
-%public
-%type String
-%line
-%column
-
-
-%{
-
-// Puedes agregar imports si los necesitas
-%}
-
-ID = [a-zA-Z_][a-zA-Z0-9_]*
-INT = [0-9]+
-FLOAT = ({INT}"."{INT}([eE][+-]?{INT})? | {INT}[eE][+-]?{INT})
+/* CppLexer.flex */
+package src;
+import java_cup.runtime.Symbol;
 
 %%
 
+%class CppLexer
+%unicode
+%public
+%cup
+%line
+%column
 
+%{
+  // Aquí puedes declarar variables auxiliares si quieres
+%}
 
-// ---- Comentarios ----
-"//".*                          { return "COMMENT|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"/*"([^*]|\*+[^*/])*\*+"/"      { return "COMMENT|" + yytext() + "|" + yyline + "|" + yycolumn; }
+%eof{
+  return new Symbol(Token.EOF);
+%eof}
 
-// ---- Literales ----
-\"([^\"\\\n]|\\.)*\"             { return "STRING|" + yytext() + "|" + yyline + "|" + yycolumn; }
-\'([^\'\\\n]|\\.)*\'             { return "CHAR|" + yytext() + "|" + yyline + "|" + yycolumn; }
+%%
 
-// ---- Palabras reservadas (se devuelven como KW) ----
-"int"        { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"float"      { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"double"     { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"char"       { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"bool"       { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"void"       { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"if"         { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"else"       { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"while"      { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"for"        { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"do"         { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"switch"     { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"case"       { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"default"    { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"return"     { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"class"      { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"struct"     { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"public"     { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"private"    { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"protected"  { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"include"    { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"using"      { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"namespace"  { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"new"        { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"delete"     { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"true"       { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"false"      { return "KW|" + yytext() + "|" + yyline + "|" + yycolumn; }
+/* ===== PALABRAS RESERVADAS ===== */
+"if"                { return new Symbol(Token.KW, yyline, yycolumn, "if"); }
+"else"              { return new Symbol(Token.KW, yyline, yycolumn, "else"); }
+"while"             { return new Symbol(Token.KW, yyline, yycolumn, "while"); }
+"for"               { return new Symbol(Token.KW, yyline, yycolumn, "for"); }
+"int"               { return new Symbol(Token.KW, yyline, yycolumn, "int"); }
+"float"             { return new Symbol(Token.KW, yyline, yycolumn, "float"); }
+"double"            { return new Symbol(Token.KW, yyline, yycolumn, "double"); }
+"char"              { return new Symbol(Token.KW, yyline, yycolumn, "char"); }
+"return"            { return new Symbol(Token.KW, yyline, yycolumn, "return"); }
+"using"             { return new Symbol(Token.KW, yyline, yycolumn, "using"); }
+"namespace"         { return new Symbol(Token.KW, yyline, yycolumn, "namespace"); }
+"include"           { return new Symbol(Token.KW, yyline, yycolumn, "include"); }
 
-// ---- Identificadores ----
-{ID}        { return "ID|" + yytext() + "|" + yyline + "|" + yycolumn; }
+/* ===== LIBRERÍAS Y ESPECIALES ===== */
+"iostream"          { return new Symbol(Token.LIB, yyline, yycolumn, "iostream"); }
+"std"               { return new Symbol(Token.LIB, yyline, yycolumn, "std"); }
+"cout"              { return new Symbol(Token.LIB, yyline, yycolumn, "cout"); }
+"endl"              { return new Symbol(Token.LIB, yyline, yycolumn, "endl"); }
+"main"              { return new Symbol(Token.LIB, yyline, yycolumn, "main"); }
 
-// ---- Números ----
-{FLOAT}     { return "NUMBER|" + yytext() + "|" + yyline + "|" + yycolumn; }
-{INT}       { return "NUMBER|" + yytext() + "|" + yyline + "|" + yycolumn; }
+/* ===== OPERADORES ===== */
+"="                 { return new Symbol(Token.OP, yyline, yycolumn, "="); }
+"<"                 { return new Symbol(Token.OP, yyline, yycolumn, "<"); }
+">"                 { return new Symbol(Token.OP, yyline, yycolumn, ">"); }
+"<<"                { return new Symbol(Token.OP, yyline, yycolumn, "<<"); }
+">>"                { return new Symbol(Token.OP, yyline, yycolumn, ">>"); }
+"=="                { return new Symbol(Token.OP, yyline, yycolumn, "=="); }
+"!="                { return new Symbol(Token.OP, yyline, yycolumn, "!="); }
+"+"                 { return new Symbol(Token.OP, yyline, yycolumn, "+"); }
+"-"                 { return new Symbol(Token.OP, yyline, yycolumn, "-"); }
+"*"                 { return new Symbol(Token.OP, yyline, yycolumn, "*"); }
+"/"                 { return new Symbol(Token.OP, yyline, yycolumn, "/"); }
 
-// ---- Operadores / símbolos (orden: tokens largos primero) ----
-"=="        { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"!="        { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"<="        { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-">="        { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"++"        { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"--"        { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"="         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"+"         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"-"         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"*"         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"/"         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"%"         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"<"         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
-">"         { return "OP|" + yytext() + "|" + yyline + "|" + yycolumn; }
+/* ===== SIGNOS DE AGRUPACIÓN ===== */
+"{"                 { return new Symbol(Token.LBRACE, yyline, yycolumn, "{"); }
+"}"                 { return new Symbol(Token.RBRACE, yyline, yycolumn, "}"); }
+"("                 { return new Symbol(Token.LPAREN, yyline, yycolumn, "("); }
+")"                 { return new Symbol(Token.RPAREN, yyline, yycolumn, ")"); }
+";"                 { return new Symbol(Token.SEMICOLON, yyline, yycolumn, ";"); }
+","                 { return new Symbol(Token.COMMA, yyline, yycolumn, ","); }
+"#"                 { return new Symbol(Token.HASH, yyline, yycolumn, "#"); }
 
-// ---- Paréntesis y llaves (los contamos según requisito) ----
-"{"         { return "LBRACE|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"}"         { return "RBRACE|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"("         { return "LPAREN|" + yytext() + "|" + yyline + "|" + yycolumn; }
-")"         { return "RPAREN|" + yytext() + "|" + yyline + "|" + yycolumn; }
-";"         { return "SEMICOLON|" + yytext() + "|" + yyline + "|" + yycolumn; }
-","         { return "COMMA|" + yytext() + "|" + yyline + "|" + yycolumn; }
-"#"         { return "HASH|" + yytext() + "|" + yyline + "|" + yycolumn; }
+/* ===== CONSTANTES ===== */
+[0-9]+              { return new Symbol(Token.NUMBER, yyline, yycolumn, yytext()); }
+\"([^\"\\]|\\.)*\"  { return new Symbol(Token.STRING, yyline, yycolumn, yytext()); }
 
-// ---- Espacios ----
-[\t\r\n ]+  { /* ignorar */ }
+/* ===== IDENTIFICADORES (variables) ===== */
+[a-zA-Z_][a-zA-Z0-9_]*  { return new Symbol(Token.ID, yyline, yycolumn, yytext()); }
 
+/* ===== ESPACIOS Y COMENTARIOS ===== */
+[ \t\r\n]+          { /* ignorar */ }
+"//".*              { /* comentario de línea */ }
+"/*"([^*]|\\*+[^*/])*"*/"   { /* comentario de bloque */ }
 
-// ---- Error: cualquier otro caracter ----
-.           { return "ERROR|" + yytext() + "|" + yyline + "|" + yycolumn; }
-
-// ---- Fin de archivo ----
-<<EOF>>     { return null; }
-
+/* ===== ERRORES ===== */
+.                   { 
+                      System.err.println("Error en línea " + yyline + ", columna " + yycolumn + ": " + yytext());
+                      return new Symbol(Token.ERROR, yyline, yycolumn, yytext()); 
+                    }
